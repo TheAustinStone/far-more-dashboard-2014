@@ -6,7 +6,6 @@ SCHEDULER.every "15s", :first_in => 0 do |job|
 
     if tweets
       tweets = tweets.map do |tweet|
-        ap tweet
         {
           name: tweet["user"]["name"],
           body: tweet["text"],
