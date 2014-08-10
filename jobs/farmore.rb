@@ -11,11 +11,19 @@ WEEKS = 6 # show signups for the last six weeks, rolling
 SECS_IN_7_DAYS = 604800
 
 SCHEDULER.every '30m', :first_in => 0 do
+  STDERR.puts "======= Wufoo Fetch!"
+  pages = 0
   page_start = 0
   entries = []
+
   while true
+    pages += 1
     resp = HTTParty.get("https://elbenshira.wufoo.com/api/v3/forms/stone-test/entries.json?pageSize=100&pageStart=#{page_start}",
                         basic_auth: auth)
+
+    if resp.code == 421
+      STDERR.puts "======= Rate limit exceeded."
+    end
     page_entries = resp["Entries"] || []
     if page_entries.length > 0
       entries += page_entries
@@ -23,6 +31,8 @@ SCHEDULER.every '30m', :first_in => 0 do
       break
     end
   end
+
+  STDERR.puts "======= Fetched #{pages} pages, #{entries.count} entries."
 
   # Total signups over weeks
 
