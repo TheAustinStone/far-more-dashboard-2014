@@ -3,7 +3,7 @@ require 'date'
 require 'awesome_print'
 
 auth = {
-  username: "POT5-R55R-95L6-9L1D",
+  username: "WRXE-5Y2U-50JV-MJJN",
   password: "foo",
 }
 
