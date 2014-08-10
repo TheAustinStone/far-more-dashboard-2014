@@ -16,25 +16,25 @@ SCHEDULER.every '30m', :first_in => 0 do
   page_start = 0
   entries = []
 
-  # while true
-  #   ap "looping"
-  #   pages += 1
-  #   resp = HTTParty.get("https://elbenshira.wufoo.com/api/v3/forms/stone-test/entries.json?pageSize=100&pageStart=#{page_start}",
-  #                       basic_auth: auth)
+  while true
+    STDERR.puts "Fetching from EntryId #{page_start}."
+    pages += 1
+    resp = HTTParty.get("https://elbenshira.wufoo.com/api/v3/forms/stone-test/entries.json?pageSize=100&pageStart=#{page_start}",
+                        basic_auth: auth)
 
-  #   if resp.code == 421
-  #     STDERR.puts "======= Rate limit exceeded."
-  #   else
-  #     ap resp
-  #   end
-  #   page_entries = resp["Entries"] || []
-  #   if page_entries.length > 0
-  #     entries += page_entries
-  #   else
-  #     ap "breaking"
-  #     break
-  #   end
-  # end
+    if resp.code == 421
+      STDERR.puts "======= Rate limit exceeded."
+    end
+
+    page_entries = resp["Entries"] || []
+    if page_entries.length > 0
+      STDERR.puts "Got #{page_entries.count} items."
+      page_start = page_entries.last["EntryId"].to_i
+      entries += page_entries
+    else
+      break
+    end
+  end
 
   STDERR.puts "======= Fetched #{pages} pages, #{entries.count} entries."
 
