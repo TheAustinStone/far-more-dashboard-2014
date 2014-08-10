@@ -62,7 +62,7 @@ SCHEDULER.every '30m', :first_in => 0 do
     # Next step counts
     ["Field6", "Field7", "Field8", "Field9"].each do |k|
       next_step = entry[k]
-      if !next_step.empty?
+      if !next_step.nil? && !next_step.empty?
         next_step_counts[next_step][:value] += 1
       end
     end
@@ -73,7 +73,7 @@ SCHEDULER.every '30m', :first_in => 0 do
 
   # Send events
   send_event('farmore-campus-leaderboard', items: campus_counts.values)
-  send_event('farmore-campus-leaderboard', items: next_step_counts.values)
+  send_event('farmore-next-steps', items: next_step_counts.values)
   send_event('signup-total', value: entries.count)
   send_event('farmore-weekly', points: points)
 end
