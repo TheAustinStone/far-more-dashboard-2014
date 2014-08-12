@@ -3,12 +3,12 @@ require 'date'
 require 'awesome_print'
 
 auth = {
-  username: "WRXE-5Y2U-50JV-MJJN",
-  password: "foo",
+  username: ENV[:WUFOO_USERNAME],
+  password: ENV[:WUFOO_PASSWORD],
 }
 
 WEEKS = 6 # show signups for the last six weeks, rolling
-SECS_IN_7_DAYS = 604800
+SECONDS_IN_A_WEEK = 60 * 60 * 24 * 7
 
 SCHEDULER.every '30m', :first_in => 0 do
   STDERR.puts "======= Wufoo Fetch!"
@@ -40,7 +40,7 @@ SCHEDULER.every '30m', :first_in => 0 do
 
   # Total signups over weeks
 
-  this_week = Time.now.to_i / SECS_IN_7_DAYS
+  this_week = Time.now.to_i / SECONDS_IN_A_WEEK
   first_week = this_week - WEEKS
   weekly_counts = [0] * (WEEKS + 1)
 
@@ -49,7 +49,7 @@ SCHEDULER.every '30m', :first_in => 0 do
 
   entries.each do |entry|
     # Weekly counts
-    week = DateTime.parse(entry["DateCreated"]).to_time.to_i / SECS_IN_7_DAYS
+    week = DateTime.parse(entry["DateCreated"]).to_time.to_i / SECONDS_IN_A_WEEK
     idx = week - first_week
     weekly_counts[idx] += 1
 
