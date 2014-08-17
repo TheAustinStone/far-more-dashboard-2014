@@ -78,6 +78,8 @@ end
 # the limit.
 SCHEDULER.every '5m', :first_in => 0 do
 
+  # TODO: make this work with the form format! it's currently broken :(
+
   # Total signups over weeks
   this_week = Time.now.to_i / SECONDS_IN_A_WEEK
   first_week = this_week - WEEKS
