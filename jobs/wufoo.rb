@@ -113,8 +113,6 @@ SCHEDULER.every '5m', :first_in => 0 do
   campus_counts = Hash.new { |h, k| h[k] = {label: k, value: 0} }
   next_step_counts = Hash.new { |h, k| h[k] = {label: k, value: 0} }
 
-  ap get_fields()
-
   entries = get_all_entries()
   entries.each do |entry|
     # Weekly counts
