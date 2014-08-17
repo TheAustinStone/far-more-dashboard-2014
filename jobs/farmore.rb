@@ -5,7 +5,7 @@ require 'redis'
 require 'json'
 
 WUFOO_AUTH = {
-  username: ENV["WUFOO_USERNAME"],
+  username: ENV["WUFOO_KEY"],
   password: "",
 }
 FORM_URL = "https://theaustinstone.wufoo.com/api/v3/forms/far-more-involve/entries.json"
