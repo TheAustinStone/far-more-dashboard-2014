@@ -19,7 +19,7 @@ SECONDS_IN_A_WEEK = 60 * 60 * 24 * 7
 
 # get the JSON entries for the given page of a form. pages are always of size
 # PAGE_SIZE.
-def get_entries(page_number)
+def get_entries_by_page(page_number)
   key = CACHE_PREFIX + page_number.to_s
   cached_response = redis.get(key)
 
@@ -50,7 +50,10 @@ def get_entries(page_number)
   resp
 end
 
-SCHEDULER.every '1m', :first_in => 0 do
+# Wufoo's API limit is 10000 requests/day. with 1440 minutes in a day, polling
+# every five minutes lets us run 34 dashboards simultaneously without hitting
+# the limit.
+SCHEDULER.every '5m', :first_in => 0 do
   STDERR.puts "======= Wufoo Fetch!"
   pages = 0
   page_start = 0
