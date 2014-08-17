@@ -8,11 +8,12 @@ WUFOO_AUTH = {
   username: ENV["WUFOO_KEY"],
   password: "",
 }
-FORM_URL = "https://theaustinstone.wufoo.com/api/v3/forms/far-more-involve/entries.json"
+FORM_URL_BASE = "https://theaustinstone.wufoo.com/api/v3/forms/far-more-involve/"
 PAGE_SIZE = 100
 
 REDIS = Redis.new(url: ENV["REDISCLOUD_URL"])
-CACHE_PREFIX = "wufoo_response_page_"
+ENTRIES_CACHE_KEY_PREFIX = "wufoo_response_page_"
+FIELDS_CACHE_KEY = "wufoo_form_fields"
 
 WEEKS = 6 # show signups for the last six weeks, rolling
 SECONDS_IN_A_WEEK = 60 * 60 * 24 * 7
@@ -20,7 +21,7 @@ SECONDS_IN_A_WEEK = 60 * 60 * 24 * 7
 # get the JSON entries for the given page of a form. pages are always of size
 # PAGE_SIZE. returns an array of entries in id-order.
 def get_entries_by_page(page_number)
-  key = CACHE_PREFIX + page_number.to_s
+  key = ENTRIES_CACHE_KEY_PREFIX + page_number.to_s
   cached_response = REDIS.get(key)
 
   # return the cached response if it's already in redis
@@ -29,29 +30,56 @@ def get_entries_by_page(page_number)
   end
 
   # otherwise, fetch and cache it
-  resp = HTTParty.get(FORM_URL, basic_auth: WUFOO_AUTH, query: {
+  resp = HTTParty.get(FORM_URL_BASE + "entries.json", query: {
     pageSize: PAGE_SIZE,
     pageStart: PAGE_SIZE * page_number,
-  })
+  }, basic_auth: WUFOO_AUTH)
 
   # make sure we got a good response
   throw "Wufoo response error: #{resp.code}" if resp.code != 200
 
   # cache the response value
-  REDIS.set(key, JSON.generate(resp))
+  entries = []
+  REDIS.multi do
+    REDIS.set(key, JSON.generate(resp))
 
-  # if the page was not full, expire the key after a short time so we'll
-  # re-fetch the page in the future to check for new entries
-  entries = resp["Entries"] || []
-  if entries.length < PAGE_SIZE
-    REDIS.expire(key, 60)
-  else
-    # expire full pages after a while too, to ensure that we have relatively
-    # up-to-date data at all times.
-    REDIS.expire(key, 60 * 60 * 3)
+    # if the page was not full, expire the key after a short time so we'll
+    # re-fetch the page in the future to check for new entries
+    entries = resp["Entries"] || entries
+    if entries.length < PAGE_SIZE
+      REDIS.expire(key, 60)
+    else
+      # expire full pages after a while too, to ensure that we have relatively
+      # up-to-date data at all times.
+      REDIS.expire(key, 60 * 60 * 3)
+    end
   end
 
   entries
+end
+
+# return the fields spec for our form
+def get_fields()
+  cached_response = REDIS.get(FIELDS_CACHE_KEY)
+
+  # return the cached response if it's already in redis
+  if cached_response != nil
+    return JSON.parse(cached_response)
+  end
+
+  # otherwise, fetch and cache it
+  resp = HTTParty.get(FORM_URL_BASE + "fields.json", basic_auth: WUFOO_AUTH)
+
+  # make sure we got a good response
+  throw "Wufoo response error: #{resp.code}" if resp.code != 200
+
+  # cache the response value and set a long-ish TTL for it
+  REDIS.multi do
+    REDIS.set(FIELDS_CACHE_KEY, JSON.generate(resp))
+    REDIS.expire(FIELDS_CACHE_KEY, 60 * 60 * 3)
+  end
+
+  resp["Fields"] || []
 end
 
 # returns all the entries in the form
@@ -87,6 +115,8 @@ SCHEDULER.every '5m', :first_in => 0 do
 
   campus_counts = Hash.new { |h, k| h[k] = {label: k, value: 0} }
   next_step_counts = Hash.new { |h, k| h[k] = {label: k, value: 0} }
+
+  ap get_fields()
 
   entries = get_all_entries()
   entries.each do |entry|
