@@ -1,13 +1,10 @@
-require 'httparty'
-require 'date'
 require 'awesome_print'
-require 'redis'
+require 'date'
+require 'httparty'
 require 'json'
+require 'redis'
 
-WUFOO_AUTH = {
-  username: ENV["WUFOO_KEY"],
-  password: "",
-}
+WUFOO_AUTH = { username: ENV["WUFOO_KEY"], password: "", }
 FORM_URL_BASE = "https://theaustinstone.wufoo.com/api/v3/forms/far-more-involve/"
 PAGE_SIZE = 100
 
