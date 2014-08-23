@@ -1,8 +1,6 @@
 <script type='text/javascript'>
 $(function() {
-Dashing.gridsterLayout('[{"col":4,"row":3,"size_x":1,"size_y":1},{"col":1,"row":1,"size_x":1,"size_y":2},{"col":4,"row":1,"size_x":1,"size_y":2},{"col":2,"row":1,"size_x":2,"size_y":2},{"col":1,"row":3,"size_x":2,"size_y":1}]')
-  Dashing.widget_base_dimensions = [370, 340]
-  Dashing.numColumns = 5
+Dashing.gridsterLayout('[{"col":4,"row":3,"size_x":1,"size_y":1},{"col":4,"row":1,"size_x":1,"size_y":2},{"col":1,"row":1,"size_x":1,"size_y":2},{"col":2,"row":1,"size_x":1,"size_y":2},{"col":3,"row":1,"size_x":1,"size_y":2},{"col":1,"row":3,"size_x":1,"size_y":1},{"col":2,"row":4,"size_x":2,"size_y":1},{"col":2,"row":3,"size_x":2,"size_y":1}]')
 });
 </script>
 
@@ -18,21 +16,36 @@ Dashing.gridsterLayout('[{"col":4,"row":3,"size_x":1,"size_y":1},{"col":1,"row":
       <div data-id="farmore-campus-leaderboard" data-view="List"
         data-unordered="true"
         data-title="Campuses"
-        data-moreinfo="Sign ups per campus"
       ></div>
     </li>
 
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
-      <div data-id="farmore-next-steps" data-view="List"
+      <div data-id="farmore-next-step" data-view="List"
         data-unordered="true"
-        data-title="Next steps"
+        data-title="NEXT STEP"
         data-moreinfo=""
       ></div>
     </li>
 
-    <li data-row="1" data-col="1" data-sizex="2" data-sizey="2">
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
+      <div data-id="farmore-serve" data-view="List"
+        data-unordered="true"
+        data-title="SERVE"
+        data-moreinfo=""
+      ></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
+      <div data-id="farmore-commit-own" data-view="List"
+        data-unordered="true"
+        data-title="COMMIT/OWN"
+        data-moreinfo=""
+      ></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
       <div data-id="farmore-weekly" data-view="Graph"
-        data-title="Sign ups"
+        data-title="SIGN UPS"
       ></div>
     </li>
 
@@ -41,6 +54,12 @@ Dashing.gridsterLayout('[{"col":4,"row":3,"size_x":1,"size_y":1},{"col":1,"row":
         data-moreinfo="Tweets with #farmore2014"
       ></div>
       <i class="icon-twitter icon-background"></i>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-id="real-time-feed" data-view="Updatelist"
+        data-unordered="true"
+      ></div>
     </li>
   </ul>
 </div>
