@@ -42,9 +42,10 @@ def get_entries_by_page(page_number)
     REDIS.set(key, JSON.generate(entries))
 
     # if the page was not full, expire the key after a short time so we'll
-    # re-fetch the page in the future to check for new entries
+    # re-fetch the page in the future to check for new entries. this also
+    # protects against constantly re-polling for the latest page.
     if entries.length < PAGE_SIZE
-      REDIS.expire(key, 60)
+      REDIS.expire(key, 10)
     else
       # expire full pages after a while too, to ensure that we have relatively
       # up-to-date data at all times.
@@ -268,10 +269,10 @@ def normalize_entry(entry)
   norm
 end
 
-# Wufoo's API limit is 10000 requests/day. with 1440 minutes in a day, polling
-# every five minutes lets us run 34 dashboards simultaneously without hitting
-# the limit.
-SCHEDULER.every '5m', :first_in => 0 do
+# Wufoo's API limit is 10000 requests/day, but we make at most one request every
+# 10 seconds, plus refreshing the cached data once every three hours. this
+# should put us slightly below the maximum number of daily requests.
+SCHEDULER.every '10s', :first_in => 0 do
   # Total signups over weeks
   this_week = Time.now.to_i / SECONDS_IN_A_WEEK
   first_week = this_week - WEEKS
