@@ -368,7 +368,14 @@ SCHEDULER.every '15s', :first_in => 0 do
 
     case step
     when :serve
-      sentence += entry[step].map(&:downcase).join(", ")
+      areas = entry[step].map(&:downcase)
+
+      if areas.length > 2
+        sentence += areas[0...-1].join(", ")
+        sentence += ", and " + areas[-1]
+      else
+        sentence += areas.join(" and ")
+      end
     else
       sentence += entry[step].to_s.downcase
     end
