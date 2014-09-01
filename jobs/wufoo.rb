@@ -321,7 +321,7 @@ SCHEDULER.every '10s', :first_in => 0 do
   commit_own_sorted = commit_own_counts.values.sort_by { |blob| -blob[:value] }
 
   # Send events
-  send_event('farmore-next-step', items: next_step_sorted)
+  send_event('farmore-next-step', value: next_step_sorted)
   send_event('farmore-serve', items: serve_sorted)
   send_event('farmore-commit-own', items: commit_own_sorted)
   send_event('farmore-campus-leaderboard', items: campus_sorted)
