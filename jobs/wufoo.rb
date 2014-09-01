@@ -253,7 +253,7 @@ def normalize_entry(entry)
     # User may sign up for multiple services. Get services for that user and
     # convert to normalized name.
     norm[step] = Set.new
-    fields = CAMPUS_SERVE_FIELDS[norm[:campus]]
+    fields = CAMPUS_SERVE_FIELDS[norm[:campus]] || []
     fields.each do |field|
       val = entry["Field#{field}"]
       if val && !val.empty?
@@ -342,7 +342,7 @@ SCHEDULER.every '15s', :first_in => 0 do
 
       last_name = entry[:last_name]
       if !last_name.try(:empty?)
-        name += ".#{first_name[0].upcase}."
+        name += ".#{last_name[0].upcase}."
       end
     else
       # No name given
@@ -369,7 +369,7 @@ SCHEDULER.every '15s', :first_in => 0 do
     when :serve
       sentence += entry[step].map(&:downcase).join(", ")
     else
-      sentence += entry[step].downcase
+      sentence += entry[step].to_s.downcase
     end
 
     if !["!", "."].include?(sentence[-1])
