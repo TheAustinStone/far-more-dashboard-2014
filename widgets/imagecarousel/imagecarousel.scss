@@ -1,0 +1,8 @@
+.widget-imagecarousel {
+  width: 100%;
+  height: 100%;
+
+  // the whole widget is a single image, and we center the image in it
+  background-size: cover;
+  background-position: center;
+}
