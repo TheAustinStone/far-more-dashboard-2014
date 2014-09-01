@@ -1,7 +1,6 @@
 class Dashing.Fullpie extends Dashing.Widget
 
   onData: (data) ->
-    console.log data
     @render(data.value)
 
   render: (data) ->
