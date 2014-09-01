@@ -12,9 +12,8 @@ class Dashing.Fullpie extends Dashing.Widget
     # data binding doesn't seem to work without this...
     $(@node).children(".title").text($(@node).attr("data-title"))
 
-    width = 260
-    height = 260
-    radius = 130
+    size = 250
+    radius = size / 2
 
     color = d3.scale.ordinal()
       .domain([1,10])
@@ -24,8 +23,8 @@ class Dashing.Fullpie extends Dashing.Widget
 
     vis = d3.select(@node).append("svg:svg")
       .data([data])
-        .attr("width", width)
-        .attr("height", height)
+        .attr("width", size)
+        .attr("height", size)
       .append("svg:g")
         .attr("transform", "translate(" + radius + "," + radius + ")")
 
