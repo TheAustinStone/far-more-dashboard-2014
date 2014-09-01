@@ -1,14 +1,14 @@
 <script type='text/javascript'>
 $(function() {
-Dashing.gridsterLayout('[{"col":4,"row":1,"size_x":1,"size_y":2},{"col":3,"row":1,"size_x":1,"size_y":1},{"col":1,"row":1,"size_x":1,"size_y":2},{"col":2,"row":1,"size_x":1,"size_y":2},{"col":3,"row":2,"size_x":1,"size_y":1},{"col":1,"row":3,"size_x":2,"size_y":1},{"col":3,"row":3,"size_x":2,"size_y":1}]')
+Dashing.gridsterLayout('[{"col":4,"row":1,"size_x":1,"size_y":1},{"col":3,"row":1,"size_x":1,"size_y":1},{"col":1,"row":1,"size_x":1,"size_y":2},{"col":2,"row":1,"size_x":1,"size_y":2},{"col":3,"row":2,"size_x":1,"size_y":1},{"col":1,"row":3,"size_x":2,"size_y":1},{"col":3,"row":3,"size_x":2,"size_y":1},{"col":4,"row":2,"size_x":1,"size_y":1}]')
 });
 </script>
 
-<% content_for :title do %>1080p dashboard<% end %>
+<% content_for :title do %>ASCC | Far More Dashboard 2014 (1080p)<% end %>
 
 <div class="gridster">
   <ul>
-    <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
       <div data-id="farmore-campus-leaderboard" data-view="List"
         data-unordered="true"
         data-title="CAMPUSES"
@@ -50,6 +50,12 @@ Dashing.gridsterLayout('[{"col":4,"row":1,"size_x":1,"size_y":2},{"col":3,"row":
 
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
       <div data-id="farmore-photos" data-view="Imagecarousel"
+      ></div>
+    </li>
+
+    <li data-row="2" data-col="4" data-sizex="1" data-sizey="1">
+      <div data-id="farmore-next-step-count" data-view="Number"
+        data-title="NEXT STEPS TAKEN"
       ></div>
     </li>
   </ul>

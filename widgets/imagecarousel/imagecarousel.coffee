@@ -1,7 +1,6 @@
 class Dashing.Imagecarousel extends Dashing.Widget
 
   ready: ->
-    console.log 'ready'
     @currentIndex = 0
     @nextImage()
     @startCarousel()
