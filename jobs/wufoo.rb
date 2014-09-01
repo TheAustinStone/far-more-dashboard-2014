@@ -378,7 +378,8 @@ SCHEDULER.every '15s', :first_in => 0 do
       sentence += "."
     end
 
-    {label: sentence, value: 0}
+    sentence
   end
-  send_event('real-time-feed', items: sentences)
+
+  send_event('real-time-feed', texts: sentences)
 end
