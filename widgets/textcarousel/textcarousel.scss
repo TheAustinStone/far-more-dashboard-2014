@@ -8,4 +8,9 @@ $background-color:  #eb9c3c;
 // ----------------------------------------------------------------------------
 .widget-textcarousel {
   background-color: $background-color;
+
+  p {
+    padding: 1em;
+    font-size: 26px;
+  }
 }
