@@ -7,7 +7,8 @@ class Dashing.Textcarousel extends Dashing.Widget
     @startCarousel()
 
   onData: (data) ->
-    @currentIndex = 0
+    # attempt to pick up where we left off, but default to starting over
+    @currentIndex = Math.max(0, @get('texts').indexOf(@get('current_text')))
 
   startCarousel: ->
     setInterval(@nextComment, 8000)
