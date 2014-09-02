@@ -158,8 +158,6 @@ NORMALIZED_TERMS = {
   "Teardown" => "Setup/Teardown",
   "KIDS Registration"            => "KIDS",
   "The Office During the Week"   => "Office",
-  "Attend Ministry Fair on 8/31" => "Ministry Fair",
-  "I have more questions"        => "Ask Questions",
 
   # Identity, here for simplicity
   "Welcome" => "Welcome",
@@ -178,14 +176,13 @@ NORMALIZED_TERMS = {
   "Connect Class 9/21-10/12" => "Connect Class",
   "Connect Class 9/14-10/5"  => "Connect Class",
   "Connect Class 10/19-11/2" => "Connect Class",
-  "Connect Lunch 9/21"       => "Connect Class",
-  "Connect Lunch 9/28"       => "Connect Class",
-  "<a href=\"http://austinstone.org/classes\">Development Class<a>" => "Development Class",
+  "Connect Lunch 9/21 and 9/28"       => "Connect Class",
   "Connect me with my Campus Pastor Greg Breazeale (greg@austinstone.org)" => "Connect with pastor",
   "Join a Missional Community" => "Missional Community",
 
   # Identity
   "Development Class"          => "Development Class",
+  "Development Class beginning 10/19"          => "Development Class",
   "Regional Event"             => "Regional Event",
   "Women's Gathering"          => "Women's Gathering",
   "STUDENTS Mailing List"      => "STUDENTS Mailing List",
@@ -198,7 +195,7 @@ NORMALIZED_TERMS = {
   #############
 
   "Partnership Class on 10/19" => "Partnership Class",
-  "Partnership Class on 8/31"  => "Partnership Class",
+  "Becoming a Partner of the Austin Stone"  => "Partnership Class",
   "Partnership Class on 10/11" => "Partnership Class",
   "Partnership Class on 10/25" => "Partnership Class",
   "Partnership Class on 10/4"  => "Partnership Class",
@@ -206,7 +203,7 @@ NORMALIZED_TERMS = {
   "Missional Community Training 10/26-11/16" => "MC Training",
   "Missional Community Training 10/19-11/2"  => "MC Training",
   "Missional Community Training 10/19-11/9"  => "MC Training",
-  "Missional Community Training 11/2-11/9"   => "MC Training",
+  "Missional Community Training"   => "MC Training",
 
   # Duplicate, above:
   # "Connect me with my Campus Pastor Greg Breazeale (greg@austinstone.org)" => "Connect with pastor",
