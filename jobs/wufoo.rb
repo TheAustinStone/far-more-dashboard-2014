@@ -177,7 +177,6 @@ NORMALIZED_TERMS = {
   "Connect Class 9/14-10/5"  => "Connect Class",
   "Connect Class 10/19-11/2" => "Connect Class",
   "Connect Lunch 9/21 and 9/28"       => "Connect Class",
-  "Connect me with my Campus Pastor Greg Breazeale (greg@austinstone.org)" => "Connect with pastor",
   "Join a Missional Community" => "Missional Community",
 
   # Identity
