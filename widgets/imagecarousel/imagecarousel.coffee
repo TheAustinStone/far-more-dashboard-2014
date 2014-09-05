@@ -10,7 +10,7 @@ class Dashing.Imagecarousel extends Dashing.Widget
     @currentIndex = Math.max(0, @get('urls').indexOf(@get('current_url')))
 
   startCarousel: ->
-    setInterval(@nextImage, 7000)
+    setInterval(@nextImage, 10000)
 
   nextImage: =>
     urls = @get('urls')
