@@ -110,8 +110,8 @@ STEP_SYMBOL = {
 CAMPUS_ATTEND_FIELD = {
   "Downtown AM"  => "Field229",
   "Downtown PM"  => "Field870",
-  "St. John AM"  => "Field865",
-  "St. John PM"  => "Field869",
+  "St John AM"  => "Field865",
+  "St John PM"  => "Field869",
   "West"  => "Field866",
   "South" => "Field867",
   "North" => "Field857", # Get involved field
@@ -120,8 +120,8 @@ CAMPUS_ATTEND_FIELD = {
 CAMPUS_OWN_FIELD = {
   "Downtown AM"  => "Field240",
   "Downtown PM"  => "Field241",
-  "St. John AM"  => "Field242",
-  "St. John PM"  => "Field243",
+  "St John AM"  => "Field242",
+  "St John PM"  => "Field243",
   "West"  => "Field242",
   "South" => "Field245",
   "North" => "Field857", # Get involved field
@@ -130,8 +130,8 @@ CAMPUS_OWN_FIELD = {
 CAMPUS_COMMIT_FIELD = {
   "Downtown AM"  => "Field230",
   "Downtown PM"  => "Field232",
-  "St. John AM"  => "Field234",
-  "St. John PM"  => "Field236",
+  "St John AM"  => "Field234",
+  "St John PM"  => "Field236",
   "West"  => "Field237",
   "South" => "Field238",
   "North" => "Field857", # Get involved field
@@ -140,8 +140,8 @@ CAMPUS_COMMIT_FIELD = {
 CAMPUS_SERVE_FIELDS = {
   "Downtown AM"  => [127, 128, 129, 130, 131, 132, 133, 134],
   "Downtown PM"  => [247, 252, 248, 249, 250, 251, 253],
-  "St. John AM"  => [477, 488, 449, 450, 451, 452, 453, 454, 455],
-  "St. John PM"  => [547, 548, 549, 550, 551, 552],
+  "St John AM"  => [477, 488, 449, 450, 451, 452, 453, 454, 455],
+  "St John PM"  => [547, 548, 549, 550, 551, 552],
   "West"  => [652, 653, 654, 655, 656, 657, 659],
   "South" => [752, 754, 756, 757, 759, 755, 759],
   "North" => [857], # Get involved field
@@ -348,17 +348,19 @@ SCHEDULER.every '15s', :first_in => 0 do
     end
 
     step = STEP_SYMBOL[entry[:step]]
-    sentence = "#{name}'s next step is to #{step}"
+    sentence = "#{name}'s next step is to #{step.upcase}"
 
     transition = case step
-                 when :commit, :own
-                   " to "
+                 when :commit 
+                   " to a "
+		 when :own
+		   " the mission by participating in "
                  when :lead
-                   " by "
+                   ""
                  when :serve
                    " in "
                  else # :attend
-                   " "
+                   " more regularly."
                  end
 
     sentence += transition
@@ -373,6 +375,7 @@ SCHEDULER.every '15s', :first_in => 0 do
       else
         sentence += areas.join(" and ")
       end
+    when :lead
     else
       sentence += entry[step].to_s.downcase
     end
@@ -381,8 +384,8 @@ SCHEDULER.every '15s', :first_in => 0 do
       # Need to add period at end
       sentence += "."
     end
-
-    sentence
+    
+    "From our #{entry[:campus].upcase} campus: #{sentence}"
   end
 
   send_event('real-time-feed', texts: sentences)
