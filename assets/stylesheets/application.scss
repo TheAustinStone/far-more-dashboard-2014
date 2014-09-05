@@ -35,6 +35,43 @@ $text-danger-color: #fff;
 // ----------------------------------------------------------------------------
 // Base styles
 // ----------------------------------------------------------------------------
+
+@font-face {
+	font-family: 'AlternateGothic';
+	src: url('../assets/alternate_gothic.eot');
+	src: url('../assets/alternate_gothic.eot') format('embedded-opentype'),
+	     url('../assets/alternate_gothic.woff') format('woff'),
+	     url('../assets/alternate_gothic.tff') format('truetype');
+
+}
+
+@font-face {
+	font-family: 'MetrischMedium';
+	src: url('../assets/metrisch_medium.eot');
+	src: url('../assets/metrisch_medium.eot') format('embedded-opentype'),
+	     url('../assets/metrisch_medium.woff') format('woff'),
+	     url('../assets/metrisch_medium.tff') format('truetype');
+
+}
+
+@font-face {
+	font-family: 'MetrischBold';
+	src: url('../assets/metrisch_bold.eot');
+	src: url('../assets/metrisch_bold.eot') format('embedded-opentype'),
+	     url('../assets/metrisch_bold.woff') format('woff'),
+	     url('../assets/metrisch_bold.tff') format('truetype');
+
+}
+
+@font-face {
+	font-family: 'Modem';
+	src: url('../assets/modem.eot');
+	src: url('../assets/modem.eot') format('embedded-opentype'),
+	     url('../assets/modem.woff') format('woff'),
+	     url('../assets/modem.tff') format('truetype');
+
+}
+
 html {
   font-size: 100%;
   -webkit-text-size-adjust: 100%;
@@ -46,7 +83,7 @@ body {
   background-color: $background-color;
   font-size: 20px;
   color: $text-color;
-  font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'MetrischMedium';
 }
 
 b, strong {
@@ -175,6 +212,29 @@ h3 {
   .title, .more-info {
     color: $text-danger-color;
   }
+}
+
+.title {
+	font-family: 'AlternateGothic';
+	color: black !important;
+	font-size: 45px;
+	margin-left: 15px;
+}
+
+h2 {
+	font-weight: normal;
+}
+
+.widget-list .title {
+	text-align: left;
+}
+
+.value {
+	font-family: 'AlternateGothic';
+}
+
+.widget-textcarousel {
+	background-color: #ff6600;
 }
 
 .more-info {
