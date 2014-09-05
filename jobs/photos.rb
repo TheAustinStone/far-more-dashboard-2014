@@ -29,7 +29,7 @@ SCHEDULER.every '3m', :first_in => 0 do
     media: 'photos',
 
     # find photos from the Stone tagged with any variant of 'farmore'
-    user_id: "theaustinstone",
+    user_id: "127351766@N05",
     tags: PHOTO_TAGS.join(","),
   })
 
