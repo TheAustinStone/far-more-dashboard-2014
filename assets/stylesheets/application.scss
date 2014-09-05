@@ -214,11 +214,13 @@ h3 {
   }
 }
 
-.title {
+.title, .widget-graph .title {
 	font-family: 'AlternateGothic';
 	color: black !important;
 	font-size: 45px;
 	margin-left: 15px;
+	position: absolute;
+	top: 10px;
 }
 
 h2 {
