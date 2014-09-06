@@ -351,7 +351,7 @@ SCHEDULER.every '15s', :first_in => 0 do
     sentence = "#{name}'s next step is to #{step.upcase}"
 
     transition = case step
-                 when :commit 
+                 when :commit
                    " to a "
 		 when :own
 		   " the mission by participating in "
@@ -384,7 +384,7 @@ SCHEDULER.every '15s', :first_in => 0 do
       # Need to add period at end
       sentence += "."
     end
-    
+
     "From our #{entry[:campus].upcase} campus: #{sentence}"
   end
 
