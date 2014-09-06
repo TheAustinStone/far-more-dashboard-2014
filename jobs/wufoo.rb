@@ -15,6 +15,10 @@ FIELDS_CACHE_KEY = "wufoo_form_fields"
 WEEKS = 6 # show signups for the last six weeks, rolling
 SECONDS_IN_A_WEEK = 60 * 60 * 24 * 7
 
+CAMPUS_POPULATIONS = {
+
+}
+
 # get the JSON entries for the given page of a form. pages are always of size
 # PAGE_SIZE. returns an array of entries in id-order.
 def get_entries_by_page(page_number)
@@ -276,8 +280,7 @@ SCHEDULER.every '10s', :first_in => 0 do
 
   campus_counts = Hash.new { |h, k| h[k] = {label: k, value: 0} }
   next_step_counts = Hash.new { |h, k| h[k] = {label: k, value: 0} }
-  serve_counts = Hash.new { |h, k| h[k] = {label: k, value: 0} }
-  commit_own_counts = Hash.new { |h, k| h[k] = {label: k, value: 0} }
+  serve_commit_own_counts = Hash.new { |h, k| h[k] = {label: k, value: 0} }
 
   entries = get_all_entries
   entries.each do |entry|
@@ -298,12 +301,16 @@ SCHEDULER.every '10s', :first_in => 0 do
 
     # Serve counts
     (entry[:serve] || []).each do |service|
-      serve_counts[service][:value] += 1
+      # Skip if they haven't chosen a service to do
+      serve_commit_own_counts[service][:value] += 1 unless service.nil?
     end
 
     # Commit and Own counts
-    commit_own_counts[entry[:commit]][:value] += 1 unless entry[:commit].nil? || entry[:commit].empty?
-    commit_own_counts[entry[:own]][:value] += 1 unless entry[:own].nil? || entry[:own].empty?
+    [:commit, :own].each do |key|
+      if !entry[key].nil? && !entry[key].empty?
+	serve_commit_own_counts[entry[key]][:value] += 1
+      end
+    end
   end
 
   # Get weekly counts
@@ -313,13 +320,11 @@ SCHEDULER.every '10s', :first_in => 0 do
   # Sort counts descending.
   campus_sorted = campus_counts.values.sort_by { |blob| -blob[:value] }
   next_step_sorted = next_step_counts.values.sort_by { |blob| -blob[:value] }
-  serve_sorted = serve_counts.values.sort_by { |blob| -blob[:value] }
-  commit_own_sorted = commit_own_counts.values.sort_by { |blob| -blob[:value] }
+  serve_commit_own_sorted = serve_commit_own_counts.values.sort_by { |blob| -blob[:value] }
 
   # Send events
   send_event('farmore-next-step', value: next_step_sorted)
-  send_event('farmore-serve', items: serve_sorted)
-  send_event('farmore-commit-own', items: commit_own_sorted)
+  send_event('farmore-serve-commit-own', items: serve_commit_own_sorted)
   send_event('farmore-campus-leaderboard', items: campus_sorted)
   send_event('signup-total', value: entries.count)
   send_event('farmore-weekly', points: points)
