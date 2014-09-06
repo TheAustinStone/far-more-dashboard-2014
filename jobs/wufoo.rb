@@ -167,21 +167,21 @@ NORMALIZED_TERMS = {
   # Service
   #############
 
-  "Greeting" => "Welcome",
-  "Setup"    => "Setup/Teardown",
-  "Teardown" => "Setup/Teardown",
+  "Greeting" => "Welcome Team",
+  "Setup"    => "Setup/Teardown Team",
+  "Teardown" => "Setup/Teardown Team",
   "KIDS Registration"            => "KIDS",
   "The Office During the Week"   => "Office",
 
   # Identity, here for simplicity
-  "Welcome" => "Welcome",
-  "Parking" => "Parking",
-  "Production" => "Production",
-  "KIDS" => "KIDS",
-  "STUDENTS" => "STUDENTS",
-  "Hospitality" => "Hospitality",
-  "Green Room" => "Green Room",
-  "Prayer" => "Prayer",
+  "Welcome" => "Welcome Team",
+  "Parking" => "Parking Team",
+  "Production" => "Production Team",
+  "KIDS" => "KIDS Team",
+  "STUDENTS" => "STUDENTS Team",
+  "Hospitality" => "Hospitality Team",
+  "Green Room" => "Green Room Team",
+  "Prayer" => "Prayer Team",
 
   #############
   # Commit
