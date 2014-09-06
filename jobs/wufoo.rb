@@ -15,8 +15,18 @@ FIELDS_CACHE_KEY = "wufoo_form_fields"
 WEEKS = 6 # show signups for the last six weeks, rolling
 SECONDS_IN_A_WEEK = 60 * 60 * 24 * 7
 
-CAMPUS_POPULATIONS = {
+# how many adults attend each campus, keyed by the campus name as provided by
+# the form.
+CAMPUS_POPULATION_COUNTS = {
+  "Downtown AM" => 2500,
+  "Downtown PM" => 1600,
+  "South" => 340,
+  "St John AM" => 1100,
+  "St John PM" => 260,
+  "West" => 360,
 
+  # FIXME: Get the actual count for this campus!
+  "North" => 100,
 }
 
 # get the JSON entries for the given page of a form. pages are always of size
@@ -278,7 +288,7 @@ SCHEDULER.every '10s', :first_in => 0 do
   first_week = this_week - WEEKS
   weekly_counts = [0] * (WEEKS + 1)
 
-  campus_counts = Hash.new { |h, k| h[k] = {label: k, value: 0} }
+  campus_counts = Hash.new { |h, k| h[k] = {label: k, value: 0, involvement: 0} }
   next_step_counts = Hash.new { |h, k| h[k] = {label: k, value: 0} }
   serve_commit_own_counts = Hash.new { |h, k| h[k] = {label: k, value: 0} }
 
@@ -294,6 +304,12 @@ SCHEDULER.every '10s', :first_in => 0 do
     campus = entry[:campus]
     if !campus.nil? && campus.length > 0
       campus_counts[campus][:value] += 1
+
+      # calculate involvement as we go
+      campus_counts[campus][:involvement] = [
+	100,
+	(100.0 * campus_counts[campus][:value] / CAMPUS_POPULATION_COUNTS[campus]).round()
+      ].min()
     end
 
     # Next step counts
@@ -313,6 +329,15 @@ SCHEDULER.every '10s', :first_in => 0 do
     end
   end
 
+  # Calculate total involvement
+  total_count = campus_counts.values
+      .map { |campus| campus[:value] }
+      .inject { |sum, x| sum + x }
+  involvement_total = [
+    100,
+    (100.0 * total_count / CAMPUS_POPULATION_COUNTS.values.inject { |sum, x| sum + x }).round()
+  ].min()
+
   # Get weekly counts
   points = []
   weekly_counts.each_with_index { |count, idx| points << {x: idx, y: count} }
@@ -328,6 +353,15 @@ SCHEDULER.every '10s', :first_in => 0 do
   send_event('farmore-campus-leaderboard', items: campus_sorted)
   send_event('signup-total', value: entries.count)
   send_event('farmore-weekly', points: points)
+
+  send_event('farmore-involvement-dtam', value: campus_counts["Downtown AM"][:involvement])
+  send_event('farmore-involvement-dtpm', value: campus_counts["Downtown PM"][:involvement])
+  send_event('farmore-involvement-north', value: campus_counts["North"][:involvement])
+  send_event('farmore-involvement-south', value: campus_counts["South"][:involvement])
+  send_event('farmore-involvement-stjam', value: campus_counts["St John AM"][:involvement])
+  send_event('farmore-involvement-stjpm', value: campus_counts["St John PM"][:involvement])
+  send_event('farmore-involvement-west', value: campus_counts["West AM"][:involvement])
+  send_event('farmore-involvement-total', value: involvement_total)
 end
 
 SCHEDULER.every '15s', :first_in => 0 do

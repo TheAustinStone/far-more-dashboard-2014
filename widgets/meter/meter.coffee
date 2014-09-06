@@ -5,7 +5,16 @@ class Dashing.Meter extends Dashing.Widget
   constructor: ->
     super
     @observe 'value', (value) ->
-      $(@node).find(".meter").val(value).trigger('change')
+      $meter = $(@node).find(".meter")
+      $meter.val(value).trigger('change')
+
+  onData: (data) ->
+    # make the data re-load itself every time it refreshes
+    @set('value', 0)
+
+    setTimeout(=>
+      @set('value', data.value)
+    , 500)
 
   ready: ->
     meter = $(@node).find(".meter")

@@ -1,6 +1,54 @@
 <script type='text/javascript'>
 $(function() {
-Dashing.gridsterLayout('[{"col":4,"row":1,"size_x":1,"size_y":1},{"col":3,"row":1,"size_x":1,"size_y":1},{"col":1,"row":1,"size_x":1,"size_y":2},{"col":2,"row":1,"size_x":1,"size_y":2},{"col":3,"row":2,"size_x":1,"size_y":1},{"col":1,"row":3,"size_x":2,"size_y":1},{"col":3,"row":3,"size_x":2,"size_y":1},{"col":4,"row":2,"size_x":1,"size_y":1}]')
+  var CAMPUS = 'total';
+  var CAMPUSES = [
+    'dtam',
+    'dtpm',
+    'north',
+    'south',
+    'stjam',
+    'stjpm',
+    'total',
+    'west',
+  ];
+
+  var EDIT = false;
+
+  // ghetto-parse the query params we want
+  var query = window.location.search.replace(/^\?/, '');
+
+  // which campus should we display data for?
+  var campusMatch = /\bcampus\=([^&\$]+)/g.exec(query);
+  if (campusMatch) {
+    var campus = campusMatch[1].toLowerCase().trim();
+
+    if (CAMPUSES.indexOf(campus) >= 0) {
+      CAMPUS = campus;
+    } else {
+      // alert the user to their error
+      alert('Invalid campus value "' + campus + '".\n\n' +
+          'Valid values are: nothing (defaults to "total"), "' +
+          CAMPUSES.join('", "') + '"');
+    }
+  }
+
+  // should dragging tiles to rearrange them be allowed?
+  var editMatch = /\bedit\=([^&\$]+)/g.exec(query);
+  if (editMatch) {
+    EDIT = /^\s*(1|true)\s*$/i.test(editMatch[1]);
+  }
+
+  // disable tile dragging if edit mode wasn't specified
+  if (!EDIT) { document.querySelector('body').style.pointerEvents = "none"; }
+
+  // remove all the campus widgets that AREN'T for the given campus
+  CAMPUSES.forEach(function (campus) {
+    var $widget = $('[data-id="farmore-involvement-' + campus + '"]');
+    if (campus !== CAMPUS) { $widget.remove(); }
+  });
+
+  // custom layout, copied from the popup it gives if you move the tiles
+  Dashing.gridsterLayout('[{"col":1,"row":2,"size_x":1,"size_y":1},{"col":4,"row":1,"size_x":1,"size_y":2},{"col":1,"row":1,"size_x":2,"size_y":1},{"col":2,"row":2,"size_x":2,"size_y":1},{"col":3,"row":1,"size_x":1,"size_y":1}]')
 });
 </script>
 
@@ -8,13 +56,6 @@ Dashing.gridsterLayout('[{"col":4,"row":1,"size_x":1,"size_y":1},{"col":3,"row":
 
 <div class="gridster">
   <ul>
-    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="farmore-campus-leaderboard" data-view="List"
-        data-unordered="true"
-        data-title="CAMPUSES"
-      ></div>
-    </li>
-
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
       <div data-id="farmore-next-step" data-view="Fullpie"
         data-title="NEXT STEPS"
@@ -29,12 +70,6 @@ Dashing.gridsterLayout('[{"col":4,"row":1,"size_x":1,"size_y":1},{"col":3,"row":
       ></div>
     </li>
 
-    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="farmore-weekly" data-view="Graph"
-        data-title="SIGN UPS"
-      ></div>
-    </li>
-
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
       <div data-id="real-time-feed" data-view="Textcarousel"
       ></div>
@@ -43,6 +78,27 @@ Dashing.gridsterLayout('[{"col":4,"row":1,"size_x":1,"size_y":1},{"col":3,"row":
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
       <div data-id="farmore-photos" data-view="Imagecarousel"
       ></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <%# all but one of these is removed on document load based on the campus value %>
+      <% {
+          dtam: "Downtown AM",
+          dtpm: "Downtown PM",
+          north: "North",
+          south: "South",
+          stjam: "St John AM",
+          stjpm: "St John PM",
+          total: "Churchwide",
+          west: "West",
+        }.each do |campus, name| %>
+      <div data-id="farmore-involvement-<%= campus.to_s %>" data-view="Meter"
+        data-min="0"
+        data-max="100"
+        data-title="% INVOLVEMENT"
+        data-moreinfo="<%= name.upcase %>"
+      ></div>
+      <% end %>
     </li>
   </ul>
 </div>
