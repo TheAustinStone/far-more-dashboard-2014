@@ -318,7 +318,6 @@ SCHEDULER.every '10s', :first_in => 0 do
 
   # Send events
   send_event('farmore-next-step', value: next_step_sorted)
-  send_event('farmore-next-step-count', current: entries.count)
   send_event('farmore-serve', items: serve_sorted)
   send_event('farmore-commit-own', items: commit_own_sorted)
   send_event('farmore-campus-leaderboard', items: campus_sorted)
@@ -327,8 +326,8 @@ SCHEDULER.every '10s', :first_in => 0 do
 end
 
 SCHEDULER.every '15s', :first_in => 0 do
-  entries = get_all_entries.last(5)
-  sentences = entries.map do |entry|
+  entries = get_all_entries()
+  sentences = entries.last(5).map do |entry|
     name = ""
 
     # Build initials, allowing:
@@ -388,5 +387,5 @@ SCHEDULER.every '15s', :first_in => 0 do
     "From our #{entry[:campus].upcase} campus: #{sentence}"
   end
 
-  send_event('real-time-feed', texts: sentences)
+  send_event('real-time-feed', texts: sentences, count: entries.count)
 end

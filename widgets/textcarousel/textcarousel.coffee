@@ -2,7 +2,7 @@ class Dashing.Textcarousel extends Dashing.Widget
 
   ready: ->
     @currentIndex = 0
-    @textElem = $(@node).find('p')
+    @textElem = $(@node).find('p:first')
     @nextComment()
     @startCarousel()
 
