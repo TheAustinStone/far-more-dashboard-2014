@@ -388,26 +388,20 @@ SCHEDULER.every '15s', :first_in => 0 do
     step = STEP_SYMBOL[entry[:step]]
     sentence = "#{name}'s next step is to #{step.upcase}"
 
-    # protect against empty steps, which somehow happens on occasion... we leave
-    # out the transition since the step value will be empty, and nothing will
-    # come after it. this looks normal enough, and we don't really have a better
-    # option in absense of the data.
-    if !entry[step].nil? && entry[step].length > 0
-      transition = case step
-		   when :commit
-		     " to a "
-		   when :own
-		     " the mission by participating in "
-		   when :lead
-		     ""
-		   when :serve
-		     " in "
-		   else # :attend
-		     " more regularly."
-		   end
+    transition = case step
+                 when :commit
+                   " to a "
+		 when :own
+		   " the mission by participating in "
+                 when :lead
+                   ""
+                 when :serve
+                   " in "
+                 else # :attend
+                   " more regularly."
+                 end
 
-      sentence += transition
-    end
+    sentence += transition
 
     case step
     when :serve
