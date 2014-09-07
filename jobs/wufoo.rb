@@ -168,8 +168,8 @@ NORMALIZED_TERMS = {
   #############
 
   "Greeting" => "Welcome Team",
-  "Setup"    => "Setup/Teardown Team",
-  "Teardown" => "Setup/Teardown Team",
+  "Setup"    => "Setup/Teardown",
+  "Teardown" => "Setup/Teardown",
   "KIDS Registration"            => "KIDS",
   "The Office During the Week"   => "Office",
 
