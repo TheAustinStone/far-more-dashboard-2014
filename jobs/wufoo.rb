@@ -366,7 +366,7 @@ end
 
 SCHEDULER.every '15s', :first_in => 0 do
   entries = get_all_entries()
-  sentences = entries.last(5).map do |entry|
+  sentences = entries.last(50).map do |entry|
     name = ""
 
     # Build initials, allowing:
