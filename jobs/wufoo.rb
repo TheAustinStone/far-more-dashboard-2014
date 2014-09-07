@@ -15,6 +15,9 @@ FIELDS_CACHE_KEY = "wufoo_form_fields"
 WEEKS = 6 # show signups for the last six weeks, rolling
 SECONDS_IN_A_WEEK = 60 * 60 * 24 * 7
 
+FULL_PAGE_CACHE_TIME = 60 * 60 * 3 # seconds
+PARTIAL_PAGE_CACHE_TIME = 120 # seconds
+
 # how many adults attend each campus, keyed by the campus name as provided by
 # the form.
 CAMPUS_POPULATION_COUNTS = {
@@ -59,11 +62,11 @@ def get_entries_by_page(page_number)
     # re-fetch the page in the future to check for new entries. this also
     # protects against constantly re-polling for the latest page.
     if entries.length < PAGE_SIZE
-      REDIS.expire(key, 10)
+      REDIS.expire(key, PARTIAL_PAGE_CACHE_TIME)
     else
       # expire full pages after a while too, to ensure that we have relatively
       # up-to-date data at all times.
-      REDIS.expire(key, 60 * 60 * 3)
+      REDIS.expire(key, FULL_PAGE_CACHE_TIME)
     end
   end
 
