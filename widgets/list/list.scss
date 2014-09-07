@@ -40,13 +40,16 @@ $moreinfo-color:    rgba(255, 255, 255, 0.7);
 
   .label {
     color: $label-color;
+    line-height: 1.3em;
   }
 
   .value {
+    display: inline-block;
     float: right;
     margin-left: 12px;
     font-weight: 600;
     color: $value-color;
+    font-size: 1.3em;
   }
 
   .updated-at {
