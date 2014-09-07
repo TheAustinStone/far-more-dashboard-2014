@@ -405,7 +405,7 @@ SCHEDULER.every '15s', :first_in => 0 do
 
     case step
     when :serve
-      areas = entry[step].map(&:downcase)
+      areas = entry[step].select { |v| !v.nil? && !v.empty? }
 
       if areas.length > 2
         sentence += areas[0...-1].join(", ")
@@ -415,7 +415,7 @@ SCHEDULER.every '15s', :first_in => 0 do
       end
     when :lead
     else
-      sentence += entry[step].to_s.downcase
+      sentence += entry[step].to_s
     end
 
     if !["!", "."].include?(sentence[-1])
