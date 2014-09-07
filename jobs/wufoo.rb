@@ -198,13 +198,13 @@ NORMALIZED_TERMS = {
 
   # Identity
   "Development Class"          => "Development Class",
-  "Development Class beginning 10/19"          => "Development Class",
+  "Development Class beginning 10/19" => "Development Class",
   "Regional Event"             => "Regional Event",
   "Women's Gathering"          => "Women's Gathering",
   "STUDENTS Mailing List"      => "STUDENTS Mailing List",
   "Parent's Night Out"         => "Parent's Night Out",
-  "Women's Equipping Class"    => "Women's Equipping Class",
-  "Men's Equipping Class"      => "Men's Equipping Class",
+  "Women's Equipping Class"    => "Women's Equipping",
+  "Men's Equipping Class"      => "Men's Equipping",
 
   #############
   # Own
