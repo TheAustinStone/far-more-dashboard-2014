@@ -224,6 +224,12 @@ h3 {
 	top: 10px;
 }
 
+.widget-list .value {
+	font-family: 'MetrischMedium';
+	font-weight: 600;
+	font-size: 100%;
+}
+
 h2 {
 	font-weight: normal;
 }
@@ -232,12 +238,25 @@ h2 {
 	text-align: left;
 }
 
-.value {
-	font-family: 'AlternateGothic';
-}
-
 .widget-textcarousel {
 	background-color: #ff6600;
+}
+
+.widget-meter {
+	background-color: yellow;
+}
+
+$meter-background-color: rgb(241, 191, 10);
+$meter-background: darken($meter-background-color, 15%);
+
+.widget-meter {
+
+  background-color: $meter-background-color;
+
+  input.meter {
+    background-color: $meter-background;
+    color: #fff;
+  }
 }
 
 .more-info {
