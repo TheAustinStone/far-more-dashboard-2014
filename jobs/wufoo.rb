@@ -15,8 +15,9 @@ FIELDS_CACHE_KEY = "wufoo_form_fields"
 WEEKS = 6 # show signups for the last six weeks, rolling
 SECONDS_IN_A_WEEK = 60 * 60 * 24 * 7
 
+WUFOO_API_DAILY_LIMIT = 5000
 FULL_PAGE_CACHE_TIME = 60 * 60 * 3 # seconds
-PARTIAL_PAGE_CACHE_TIME = 120 # seconds
+PARTIAL_PAGE_CACHE_TIME = ((60 * 60 * 24) / (WUFOO_API_DAILY_LIMIT / 1.5)).round # seconds
 
 # how many adults attend each campus, keyed by the campus name as provided by
 # the form.
