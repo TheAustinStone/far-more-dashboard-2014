@@ -3,6 +3,8 @@ require 'date'
 require 'httparty'
 require 'json'
 require 'redis'
+require 'stringio'
+require 'zlib'
 
 WUFOO_AUTH = { username: ENV["WUFOO_KEY"], password: "", }
 FORM_URL_BASE = "https://theaustinstone.wufoo.com/api/v3/forms/far-more-involve/"
@@ -33,15 +35,31 @@ CAMPUS_POPULATION_COUNTS = {
   "North" => 100,
 }
 
+def gzip(string)
+  io = StringIO.new("w")
+  w_gz = Zlib::GzipWriter.new(io, Zlib::BEST_COMPRESSION)
+  w_gz.write(string)
+  w_gz.close
+
+  io.string
+end
+
+def gunzip(data)
+  io = StringIO.new(data, "rb")
+  gz = Zlib::GzipReader.new(io)
+
+  gz.read
+end
+
 # get the JSON entries for the given page of a form. pages are always of size
 # PAGE_SIZE. returns an array of entries in id-order.
 def get_entries_by_page(page_number)
   key = ENTRIES_CACHE_KEY_PREFIX + page_number.to_s
   cached_response = REDIS.get(key)
 
-  # return the cached response if it's already in redis
+  # decompress and return the cached response if it's already in redis
   if cached_response != nil
-    return JSON.parse(cached_response)
+    return JSON.parse(gunzip(cached_response))
   end
 
   # otherwise, fetch and cache it
@@ -57,7 +75,12 @@ def get_entries_by_page(page_number)
   entries = []
   REDIS.multi do
     entries = resp["Entries"] || entries
-    REDIS.set(key, JSON.generate(entries))
+
+    # compress the entry data with GZip to increase the amount we can store in
+    # our free Redis instance. it seems to compress _extremely_ well, down to 4%
+    # of its original size in one instance!
+    data = JSON.generate(entries)
+    REDIS.set(key, gzip(data))
 
     # if the page was not full, expire the key after a short time so we'll
     # re-fetch the page in the future to check for new entries. this also
